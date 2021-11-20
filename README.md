@@ -1,2 +1,2 @@
 # DotNetCoreShowcase
-A simple DotNetCore application to
+A simple DotNetCore application to practice DotNetCore code practices and standards.
