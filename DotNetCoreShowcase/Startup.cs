@@ -28,6 +28,7 @@ namespace DotNetCoreShowcase
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddSwaggerGen();
             services.AddMediatR(typeof(Startup).GetTypeInfo().Assembly);
         }
 
@@ -37,6 +38,12 @@ namespace DotNetCoreShowcase
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+                app.UseSwaggerUI(options =>
+                {
+                    options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+                    options.RoutePrefix = string.Empty;
+                });
             }
 
             app.UseHttpsRedirection();
