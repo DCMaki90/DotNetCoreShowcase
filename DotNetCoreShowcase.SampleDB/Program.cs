@@ -1,21 +1,24 @@
-﻿using DotNetCoreShowcase.SampleDB.Models;
-using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.IO;
 using static System.Environment;
+using Microsoft.EntityFrameworkCore;
+using DotNetCoreShowcase.SampleDB.Models;
 
 namespace DotNetCoreShowcase.SampleDB
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             // Copy existing database to AppData
+            Console.WriteLine("DotNetCoreShowcase.SampleDB Started");
+            Console.WriteLine("DotNetCoreShowcase.SampleDB: Copying sample Chinook_sqlite.sqlite database...");
             SpecialFolder appDataDir = Environment.SpecialFolder.LocalApplicationData;
             string appDataProjectDir = $@"{Environment.GetFolderPath(appDataDir)}\DotNetCoreShowcase";
             File.Copy($@".\SampleDatabases\Chinook_Sqlite.sqlite" , $@"{appDataProjectDir}\Chinook_Sqlite.sqlite", overwrite : true);
 
             // Populate unexisting database to AppData
+            Console.WriteLine("DotNetCoreShowcase.SampleDB: Populating ShowcaseSample.sqlite database...");
             using (var showcaseContext = new ShowcaseSampleDBContext())
             {
                 // Automate table creations to add data
@@ -45,8 +48,8 @@ namespace DotNetCoreShowcase.SampleDB
                     AddressId = addressGuid
                 });
                 showcaseContext.SaveChanges();
-                
             }
+            Console.WriteLine("DotNetCoreShowcase.SampleDB: Finished");
         }
     }
 }

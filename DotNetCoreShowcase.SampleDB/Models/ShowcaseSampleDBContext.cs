@@ -1,6 +1,4 @@
 ﻿using System;
-using System.IO;
-using System.Reflection;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using static System.Environment;
@@ -20,14 +18,30 @@ namespace DotNetCoreShowcase.SampleDB.Models
             // Set to user's AppData folder
             SpecialFolder appDataDir = Environment.SpecialFolder.LocalApplicationData;
             AppDataProjectDir = $@"{Environment.GetFolderPath(appDataDir)}\DotNetCoreShowcase";
-            DbPath = $@"{AppDataProjectDir}\ShowcaseSample.db";
-            
-            System.IO.Directory.CreateDirectory(AppDataProjectDir);  // Function ignores if it exists, created if it does not
-            if (!System.IO.File.Exists(DbPath))
+            DbPath = $@"{AppDataProjectDir}\ShowcaseSample.sqlite";
+
+            // CreateDirectory function ignores if it exists, created if it does not
+            System.IO.Directory.CreateDirectory(AppDataProjectDir);  
+            if (System.IO.File.Exists(DbPath))
             {
                 using (var connection = new SqliteConnection($"Data Source={DbPath}"))
                 {
-                    connection.Open();  // Ensure the SQLite db file is created
+                    connection.Open();
+                    SqliteCommand dropCmd = connection.CreateCommand();
+                    dropCmd.CommandText = "DROP TABLE IF EXISTS Users";
+                    dropCmd.ExecuteNonQuery();
+                    dropCmd.CommandText = "DROP TABLE IF EXISTS Addresses";
+                    dropCmd.ExecuteNonQuery();
+                    dropCmd.CommandText = "DROP TABLE IF EXISTS __EFMigrationsHistory";
+                    dropCmd.ExecuteNonQuery();
+                }
+            }
+            else
+            {
+                using (var connection = new SqliteConnection($"Data Source={DbPath}"))
+                {
+                    // Ensure the SQLite db file is created
+                    connection.Open();  
                 }
             }
         }
