@@ -1,4 +1,5 @@
 ﻿using DotNetCoreShowcase.SampleDB.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.IO;
 using static System.Environment;
@@ -17,18 +18,11 @@ namespace DotNetCoreShowcase.SampleDB
             // Populate unexisting database to AppData
             using (var showcaseContext = new ShowcaseSampleDBContext())
             {
-                Guid userIdGuid = Guid.NewGuid();
+                // Automate table creations to add data
+                showcaseContext.Database.Migrate();
+
+                // Add data
                 Guid addressGuid = Guid.NewGuid();
-                showcaseContext.Users.Add(new User() 
-                { 
-                    UserId = userIdGuid,
-                    CreationEpoch = 1638045950,
-                    Email = "dcmaki90@gmail.com",
-                    FirstName = "Devin",
-                    LastName = "Maki",
-                    AddressId = addressGuid
-                });
-                showcaseContext.SaveChanges();
                 showcaseContext.Addresses.Add(new Address()
                 {
                     AddressId = addressGuid,
@@ -39,6 +33,19 @@ namespace DotNetCoreShowcase.SampleDB
                     Country = "USA"
                 });
                 showcaseContext.SaveChanges();
+
+                Guid userIdGuid = Guid.NewGuid();
+                showcaseContext.Users.Add(new User() 
+                { 
+                    UserId = userIdGuid,
+                    CreationEpoch = 1638045950,
+                    Email = "dcmaki90@gmail.com",
+                    FirstName = "Devin",
+                    LastName = "Maki",
+                    AddressId = addressGuid
+                });
+                showcaseContext.SaveChanges();
+                
             }
         }
     }
