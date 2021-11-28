@@ -15,7 +15,7 @@ namespace DotNetCoreShowcase.SampleDB
             File.Copy($@".\SampleDatabases\Chinook_Sqlite.sqlite" , $@"{appDataProjectDir}\Chinook_Sqlite.sqlite", overwrite : true);
 
             // Populate unexisting database to AppData
-            using (var showcaseContext = new ShowcaseSampleDBContext(dbPath : appDataProjectDir))
+            using (var showcaseContext = new ShowcaseSampleDBContext())
             {
                 Guid userIdGuid = Guid.NewGuid();
                 Guid addressGuid = Guid.NewGuid();

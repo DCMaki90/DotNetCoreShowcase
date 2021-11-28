@@ -14,21 +14,13 @@ namespace DotNetCoreShowcase.SampleDB.Models
         public string DbPath { get; private set; }
         public string AppDataProjectDir { get; private set; }
 
-        public ShowcaseSampleDBContext(string dbPath = null)
+
+        public ShowcaseSampleDBContext()
         {
-            if (dbPath == null)
-            {
-                // Default Location
-                SpecialFolder appDataDir = Environment.SpecialFolder.LocalApplicationData;
-                AppDataProjectDir = $@"{Environment.GetFolderPath(appDataDir)}\DotNetCoreShowcase";
-                DbPath = $@"{AppDataProjectDir}\ShowcaseSample.db";
-            }
-            else
-            {
-                // Currently impossible to hit, setting up potential to specify db location via program parameters
-                AppDataProjectDir = dbPath;
-                DbPath = $@"{AppDataProjectDir}\ShowcaseSample.db";
-            }
+            // Set to user's AppData folder
+            SpecialFolder appDataDir = Environment.SpecialFolder.LocalApplicationData;
+            AppDataProjectDir = $@"{Environment.GetFolderPath(appDataDir)}\DotNetCoreShowcase";
+            DbPath = $@"{AppDataProjectDir}\ShowcaseSample.db";
             
             System.IO.Directory.CreateDirectory(AppDataProjectDir);  // Function ignores if it exists, created if it does not
             if (!System.IO.File.Exists(DbPath))
